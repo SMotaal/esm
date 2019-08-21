@@ -1,5 +1,18 @@
 ﻿# Design
 
+## Requirements
+
+The following requirements are already captured by this document:
+
+- [x] Module resolution from bare "module ids".
+- [x] Module location and retrieval from "scope ids".
+- [x] Multiple "initialized" module instances per "instantiated" module.
+
+The following requirements are not yet captured by this document:
+
+- [ ] Remapping for `scopeId` (ie Container or Loader based).
+- [ ] Remapping for `moduleId` (ie Container or Loader based).
+
 ## Architecture
 
 ### Ephemeral Record
@@ -24,7 +37,7 @@ interface EphemeralRecord<K extends string = string> {
 }
 ```
 
-**Instantiation**
+#### Instantiation
 
 New instances of classes with respective ephemeral record automatically create an ephemeral record in their same host _environment_ when constructed, where such records are considered to be _instantiated_ (ie local) records.
 
@@ -49,7 +62,7 @@ interface InstantiatedEphemeralRecord<K extends string = string> extends Ephemer
 }
 ```
 
-**Serialization and Distribution**
+#### Serialization and Distribution
 
 The abstract term _environment_ specifically refers to an host-encapsulated operating runtime, without any concrete stipulation of the encapsulating mechanisms, like _threads_, _processes_, _systems_... etc.
 
@@ -97,7 +110,7 @@ type ModuleIdString<V extends string = string> = PatternString<
 
 A container is a runtime abstraction for working with contexts and realms across locally and/or remotely hosted runtime environments.
 
-**Container Records**
+#### Container Records
 
 ```ts
 type ContainerHash = EphemeralHash<'container'>;
@@ -140,7 +153,7 @@ interface RemoteContainerRecord extends ContainerRecord {
 }
 ```
 
-**Container Instances**
+#### Container Instances
 
 ```ts
 abstract class Container<R extends ContainerRecord = ContainerRecord>
@@ -185,7 +198,7 @@ class RemoteContainer<
 
 A loader is a runtime abstraction for loading modules and resources within each container.
 
-**Loader Records**
+#### Loader Records
 
 ```ts
 type LoaderHash = EphemeralHash<'loader'>;
@@ -221,7 +234,7 @@ interface NestedLoaderRecord extends InstantiatedLoaderRecord {
 interface RemoteLoaderRecord extends LoaderRecord {}
 ```
 
-**Loader Instances**
+#### Loader Instances
 
 ```ts
 abstract class Loader<R extends LoaderRecord = LoaderRecord>
@@ -256,7 +269,7 @@ class RemoteLoader<R extends LoaderRecord = LoaderRecord> extends Loader<R> {
 
 A scope is a runtime abstraction for locating (and relating) resources based on scoped `moduleId` mappings — ie bare specifiers that start with a given `ScopeIdString` part(s).
 
-**Scope Records**
+#### Scope Records
 
 ```ts
 type ScopeHash = EphemeralHash<'scope'>;
@@ -281,7 +294,7 @@ interface InstantiatedScopeRecord
 }
 ```
 
-**Scope Instances**
+#### Scope Instances
 
 ```ts
 class Scope<R extends ScopeRecord = ScopeRecord>
@@ -300,7 +313,7 @@ class Scope<R extends ScopeRecord = ScopeRecord>
 
 A module is a runtime abstraction for retrieving and initializing instances of modules based on their `moduleId`.
 
-**Module Records**
+#### Module Records
 
 ```ts
 type ModuleHash = EphemeralHash<'module'>;
@@ -323,7 +336,7 @@ interface InstantiatedModuleRecord
 }
 ```
 
-**Module Instances**
+#### Module Instances
 
 ```ts
 class Module<R extends ModuleRecord = ModuleRecord>
