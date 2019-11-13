@@ -20,6 +20,7 @@
     "nex:trace": "tasks/node-exm-trace"
   },
   "devDependencies": {
+    "@smotaal.io/prettier.config": "*",
     "@types/node": "*",
     "prettier": "*",
     "rollup": "*",
