@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "simple-app-esm",
   "type": "commonjs",
   "main": "app.js"
