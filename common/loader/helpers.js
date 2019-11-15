@@ -86,17 +86,21 @@ export function entryURLFrom(url, entryName) {
   }
 }
 
-export async function readFromURL(url, options = {'no-referrer': true}) {
+/**
+ * @param {URL | string} url
+ * @param {Partial<RequestInit>} [options]
+ */
+export async function readFromURL(url, options) {
   const href = (url && url.href) || `${url}`;
   let scheme = (url && url.protocol) || (SchemePart.exec(href) || '')[0] || '';
-  // console.log({
-  //   scheme,
-  //   href,
-  //   isStandardScheme: StandardSchemes.includes(scheme),
-  //   options,
-  // });
+  console.log({
+    scheme,
+    href,
+    isStandardScheme: StandardSchemes.includes(scheme),
+    options,
+  });
   if (typeof fetch === 'function' && StandardSchemes.includes(scheme)) {
-    return `${await (await fetch(url, options)).text()}`;
+    return `${await (await fetch(url, {...readFromURL.defaults, ...options})).text()}`;
   }
   if (typeof process === 'object' && (!scheme || scheme === 'file:')) {
     if (typeof url === 'string') {
@@ -106,3 +110,5 @@ export async function readFromURL(url, options = {'no-referrer': true}) {
     return `${(await import('fs')).readFileSync(url)}`;
   }
 }
+
+readFromURL.defaults = {'no-referrer': true};

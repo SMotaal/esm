@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @typedef {import('assert')} assert
  * @typedef {typeof import('../package-record').PackageRecord} PackageRecord
  * @typedef {{assert: assert, PackageRecord: PackageRecord}} Dependencies

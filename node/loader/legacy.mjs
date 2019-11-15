@@ -56,16 +56,20 @@ const resolver = new (class LegacyNodeResolver {
 
       async resolve(specifier, referrer = this.base, resolve) {
         let resolved, url, format, isMain, trace;
-        main || specifier !== mainArgv || (specifier = main = specifier.replace(/^\//, `${ROOT}/`));
-        isMain = specifier === main;
+        try {
+          main || specifier !== mainArgv || (specifier = main = specifier.replace(/^\//, `${ROOT}/`));
+          isMain = specifier === main;
 
-        ({url, format} = resolved = await this.resolveSpecifier(specifier, referrer, isMain));
-        (!isMain &&
-          ((format === BUILTIN || format === CJS) && ({url, format} = resolved = resolve(specifier, referrer)))) ||
-          (resolved.url = `${url}`);
-        isMain && (resolved.main = true);
-        trace = (resolved && (format || 'unknown')) || 'unresolved';
-        return resolved;
+          ({url, format} = resolved = await this.resolveSpecifier(specifier, referrer, isMain));
+          (!isMain &&
+            ((format === BUILTIN || format === CJS) && ({url, format} = resolved = resolve(specifier, referrer)))) ||
+            (resolved.url = `${url}`);
+          isMain && (resolved.main = true);
+          trace = (resolved && (format || 'unknown')) || 'unresolved';
+          return resolved;
+        } finally {
+          tracing && trace && console.log(trace, {specifier, referrer, resolve, url, format, isMain});
+        }
       }
 
       async resolveIndex(location, extensions = this.extensions) {
