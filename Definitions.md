@@ -221,6 +221,7 @@ Loader Scope is the abstraction used to define a partially-opaque mapping betwee
 
     - **`records` _ScopeMappings_**
 
+<!-- A normalized path-like module identifier denomination used to enforce artificial encapsulation for security/consistency considerations during the various module loading operations. -->
 
 </dl>
 </dl>
