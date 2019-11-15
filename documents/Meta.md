@@ -1,4 +1,4 @@
-# Meta
+﻿# Meta
 
 <details open><summary><b>181215 guy's input</b>
 
