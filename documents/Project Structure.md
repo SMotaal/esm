@@ -14,12 +14,12 @@ This project uses a structured monorepo for development.
 
 <details open><summary><i>./package.json <kbd>manifest</kbd></i> — defines project workspaces and external dependencies</summary>
 
-
 ```jsx
 {
   "workspaces": [ /*  */ ]
 }
 ```
+
 </details>
 
 ---
