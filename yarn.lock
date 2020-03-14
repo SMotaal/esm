@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@smotaal.io/prettier.config@*":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@smotaal.io/prettier.config/-/prettier.config-0.0.1.tgz#30b94f1cd4d88bfd1a6df2297c432d8b13d59c1e"
+  integrity sha512-nfkgrMqi2jVkyOVpR6jipXSbiSQJtwL2XvKrSGs7hmI+0PJysWRhT2ZeF7WPDSuR5Cu9VCpV7Ju79SRkV2+kcA==
+
 "@types/estree@0.0.39":
   version "0.0.39"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
@@ -13,9 +18,9 @@
   integrity sha512-wa09itaLE8L705aXd8F80jnFpxz3Y1/KRHfKsYL2bPc0XF+wEWu8sR9n5bmeu8Ba1N9z2GRNzm/YdHcghLkLKg==
 
 acorn@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
-  integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.4.1.tgz#531e58ba3f51b9dacb9a6646ca4debf5b14ca474"
+  integrity sha512-ZVA9k326Nwrj3Cj9jlh3wGFutC2ZornPNARZwsNYqQYgN0EsV2d53w5RN/co65Ohn4sUAUtb1rSUAOD6XN9idA==
 
 prettier@*:
   version "1.16.4"
