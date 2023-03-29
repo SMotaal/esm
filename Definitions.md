@@ -111,28 +111,99 @@ Runtime subsystem(s) and processes that handle the various operations for import
 
 > **Note**: This is ideally where realm-based module remapping would take place.
 
+```js
+/**
+ * Module identifier used to key in-loader collections.
+ * @typedef {unknown} ModuleId
+ */
+
+/**
+ * Resolve an import string to a module identifier.
+ * 
+ * @param {string} toImport exact argument to `import`
+ * @param {ModuleId} referrer base for the importing module
+ * @return {ModuleId} new identity for the imported module
+ */
+function resolve(toImport: string, referrer: ModuleId): ModuleId;
+```
+
 <dt>Location
 <dd>The operation used to determine the unique resource location of a module based on its unique module identifier, by deterministic derivation, mapping and/or device-dependent operations, applicable to non-synthetic modules and synthetically wrapped resource modules which are retrieved from externally.
 
-> **Note**: This is where context-based pre-caching would take place.
+> **Note**: This is where context-based cache warming would take place.
+
+```js
+/**
+ * Communicate a location to the retrieve system.
+ * @typedef {unknown} ModuleLocation
+ */
+
+/**
+ * @param {ModuleId} moduleId the module identifier to locate
+ * @return {ModuleLocation} the location of the module
+ */
+function locate(moduleId: string): Promise<ModuleLocation>;
+```
 
 <dt>Retrieval
 <dd>The operation used to transport content of non-synthetic and synthetically wrapped resource modules, usually handled on a per-context basis.
 
 > **Note**: This is where context-based security/consistency checking would take place, and would likely include source text parsing and static pre-linking (ie for all relatively scoped resources).
 
+```js
+/**
+ * Communicate a retrieved module to the linker.
+ * @typedef {unknown} ModuleLinkageRecord
+ */
+
+/**
+ * @param url the URL to retrieve
+ * @return Record describing module's linking requirements
+ */
+function retrieve(location: ModuleLocation): Promise<ModuleLinkageRecord>;
+```
+
 <dt>Linking
 
-<dd>The operation used to normalize and/or synthesize the single context or realm specific manifestation of a module, including the namespace object which hold the prefined set of yet-to-be-initialized exports.
-
+<dd>The operation used to normalize and/or synthesize the single context or realm specific manifestation of a module, including the namespace object which hold the predefined set of yet-to-be-initialized exports.
+  
 > **Note**: This is ideally where augmentation (ie instrumentation) would take place.
+
+```js
+// Provide linker hooks that are specific to the container.
+type ModuleContainer = {
+  // Create a module instance for a linkage record in this container.
+  instantiate(moduleId: ModuleId, linkageRecord: ModuleLinkageRecord): ModuleInstance;
+  // Optionally delegate to another container.
+  containerFor?: (moduleId: ModuleId) => ModuleContainer;
+};
+
+type ModuleInstance = {
+  // The initializer must be an idempotent function, returning a namespace.
+  initialize(): Promise<Record<string, unknown>>;
+};
+
+/**
+ * @param {Map<ModuleId, ModuleLinkageRecord>} moduleLinkageMap the linkage information for this graph
+ * @param {ModuleId} moduleId the root of this linkage graph
+ * @param {ModuleContainer} container where to instantiate the root
+ * @return {ModuleInstance} the module instance ready to initialize
+ */
+function link(moduleLinkageMap: Map<ModuleId, ModuleLinkageRecord>, moduleId: ModuleId, container: ModuleContainer): ModuleInstance;
+```
 
 <dt>Initialization
 
-<dd>The operation used to initialized the exposed namespace, by synthetic binding or evaluation which could also be inclusive of side-effects.
+<dd>The operation used to initialize the exposed namespace, by synthetic binding or evaluation which could also be inclusive of side-effects.
 
-> **Note**: At this point, it is essentially to assume that all preceding module loading operations across the entire module graph would have successfully completed and that all that all related module records have been sealed.
+> **Note**: At this point, it is essential to assume that all preceding module loading operations across the entire module graph would have successfully completed and that all related module records have been sealed.
 
+```js
+/**
+ * Call the initialize() method, which returns a Promise for the ModuleNamespace object.
+ */
+const ns = await moduleInstance.initialize();
+```
 </dl>
 
 <dt>Module Loader Architecture
